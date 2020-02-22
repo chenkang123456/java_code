@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yq.mapper.BookMapper">
+    <select id="queryBookList" parameterType="map" resultType="book">
+        select * from bookmanage
+        <where>
+            <if test="bookName!=null and bookName!=''">
+                bookName like count('%',#{bookName},'%')
+            </if>
+            <if test="author!=null and author!=''">
+                and author like count('%',#{author},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addBook" parameterType="map">
+        insert into bookmanage(
+        bookName,
+        author,
+        inventory,
+        price) values(#{bookName},#{author},#{inventory},#{price})
+    </insert>
+
+    <update id="editBook" parameterType="map">
+        update bookmanage set bookName=#{bookName},
+        author=#{author},
+        inventory=#{inventory},
+        price=#{price}
+        where bId=#{bId}
+    </update>
+
+    <delete id="delBook" parameterType="map">
+        delete from bookmanage where bId=#{bId}
+    </delete>
+
+    <!--借阅图书-->
+    <insert id="addSubBook" parameterType="map">
+        insert into booksub(uId,bId,subDateTime,bookType,returnType) values(#{uId},#{bId},#{subDateTime},#{bookType},#{returnType})
+    </insert>
+
+    <!--归还图书-->
+    <update id="returnBook" parameterType="map">
+        update booksub
+        <set>
+            <if test="returnDateTime!=null and returnDateTime!=''">
+                returnDateTime=#{returnDateTime}
+            </if>
+            <if test="bookType!=null and bookType!='2'.toString()">
+                bookType=#{bookType}
+            </if>
+            <if test="returnType!=null and returnDateTime!=''">
+                returnType=#{returnType}
+            </if>
+            <if test="uId!=null and uId!=''">
+                uId=#{uId}
+            </if>
+            <if test="bId!=null and bId!=''">
+                bId=#{bId}
+            </if>
+            <if test="bookType!=null and bookType!='1'.toString()">
+                AND bookType=#{bookType}
+            </if>
+        </set>
+    </update>
+    
+    <select id="querySub" parameterType="map" resultType="booksub">
+        select * from booksub
+        <where>
+            <if test="uId!=null and uId!=''">
+                uId=#{uId}
+            </if>
+            <if test="bId!=null and bId!=''">
+                bId=#{bId}
+            </if>
+            <if test="subDateTime!=null and subDateTime!=''">
+                subDateTime=#{subDateTime}
+            </if>
+            <if test="returnDateTime!=null and returnDateTime!=''">
+                returnDateTime=#{returnDateTime}
+            </if>
+            <if test="bookType!=null">
+                bookType=#{bookType}
+            </if>
+            <if test="returnType!=null">
+                returnType=#{returnType}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateInventtories" parameterType="map">
+        update bookmanage set
+        inventory=#{inventory}
+        where bId=#{bId}
+    </update>
+</mapper>

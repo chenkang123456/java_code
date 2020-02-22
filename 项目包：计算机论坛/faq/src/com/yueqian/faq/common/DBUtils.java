@@ -15,19 +15,19 @@ public class DBUtils {
 		 ds = new BasicDataSource();
 		 ds.setDriverClassName("com.mysql.jdbc.Driver");
 		 ds.setUrl("jdbc:mysql:///faq?useUnicode=true&characterEncoding=utf8&useSSL=false"); 
-		 ds.setUsername("ck"); 
-		 ds.setPassword("123456");
+		 ds.setUsername("root"); 
+		 ds.setPassword("1234");
 		 ds.setMaxActive(20); ds.setMinIdle(1); ds.setMaxIdle(4);
 		 ds.setMaxWait(4000); ds.setDefaultAutoCommit(false);
 	}
 
 	/**
-	 * ��ȡ���ݿ�����
+	 * 锟斤拷取锟斤拷锟捷匡拷锟斤拷锟斤拷
 	 * 
 	 * @return
 	 */
 	public static Connection getConnection() {
-		// ���ȴ�ThreadLocal�����л�ȡ��ǰ�̰߳󶨵����Ӷ���
+		// 锟斤拷锟饺达拷ThreadLocal锟斤拷锟斤拷锟叫伙拷取锟斤拷前锟竭程绑定碉拷锟斤拷锟接讹拷锟斤拷
 		Connection conn = tl.get();
 		if (conn == null) {
 			try {
@@ -58,7 +58,7 @@ public class DBUtils {
 	}
 
 	public static void closeDataSource() {
-		System.out.println("关闭数据源.");
+		System.out.println("鍏抽棴鏁版嵁婧�.");
 		/*
 		 * if (ds != null) { try { ds.close(); } catch (SQLException e) {
 		 * e.printStackTrace(); } }

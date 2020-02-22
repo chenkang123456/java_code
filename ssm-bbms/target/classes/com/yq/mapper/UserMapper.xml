@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yq.mapper.UserMapper">
+    <!--查询用户列表-->
+    <select id="querUserList" parameterType="map" resultType="user">
+        select * from db_user
+        <where>
+            <if test="userName!=null and userName!=''">
+                userName like count('%',#{userName},'%')
+            </if>
+
+            <if test="sex!=null and sex!=''">
+                sex like count('%',#{sex},'%')
+            </if>
+
+        </where>
+    </select>
+    <!--根据条件查询用户是否存在-->
+    <select id="queryUser" parameterType="map" resultType="int">
+        select count(1) from db_user where userName = #{userName} and psssword=#{password}
+    </select>
+
+    <insert id="addUser" parameterType="map" keyProperty="id">
+        insert into db_user(
+        uId,
+        userName,
+        password,
+        uName,
+        age,
+        sex,) values(#{uId},#{userName},#{password},#{uName},#{age},#{sex})
+    </insert>
+
+    <update id="updateUser" parameterType="map">
+        update db_user set uId=#{uId},userName=#{userName},password=#{password},uName=#{uName},
+        age=#{age},sex=#{sex} where userName=#{userName}
+    </update>
+
+    <update id="updateUserById" parameterType="map">
+        update db_user set uId=#{uId},userName=#{userName},password=#{password},uName=#{uName},
+        age=#{age},sex=#{sex} where id=#{id}
+    </update>
+    <!--修改用户密码-->
+    <update id="updateUserPass" parameterType="map">
+        update db_user set password=#{password} where userName=#{userName}
+    </update>
+    <delete id="delUser" parameterType="map">
+        delete from db_user where userName=#{userName}
+    </delete>
+</mapper>
